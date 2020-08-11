@@ -55,7 +55,7 @@ class GeneratorData
         return $this->measurementTime;
     }
 
-    public function setMeasurementTime(\DateTimeInterface $measurementTime): self
+    public function setMeasurementTime(?\DateTimeInterface $measurementTime): self
     {
         $this->measurementTime = $measurementTime;
 
@@ -67,7 +67,7 @@ class GeneratorData
         return $this->currentPower;
     }
 
-    public function setCurrentPower(int $currentPower): self
+    public function setCurrentPower(?int $currentPower): self
     {
         $this->currentPower = $currentPower;
 
