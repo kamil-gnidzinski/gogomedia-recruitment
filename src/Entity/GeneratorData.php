@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=GeneratorDataRepository::class)
+ * @ORM\Table(indexes={@ORM\Index(name="idx_search",columns={"generatorID","measurementTime"})})
+ *
  */
 class GeneratorData
 {
@@ -18,7 +20,7 @@ class GeneratorData
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Generator::class, inversedBy="date")
+     * @ORM\ManyToOne(targetEntity=Generator::class, inversedBy="data")
      * @ORM\JoinColumn(nullable=false)
      */
     private $generatorID;
