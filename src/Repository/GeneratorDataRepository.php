@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Generator;
 use App\Entity\GeneratorData;
+use App\Traits\PaginationTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,37 +17,42 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class GeneratorDataRepository extends ServiceEntityRepository
 {
+    /**
+     * Trait used for calculating first result and max results
+     */
+    use PaginationTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, GeneratorData::class);
     }
 
-    // /**
-    //  * @return GeneratorData[] Returns an array of GeneratorData objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Gets all GeneratorData objects by generator id and date
+     *
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @param Generator $generator
+     * @param int $page
+     * @param int $perpage
+     * @return array|null
+     */
+    public function searchByGeneratorAndDate(\DateTime $from, \DateTime $to, Generator $generator, int $page, int $perpage): ?array
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $qb = $this->createQueryBuilder('gd');
+        $qb
+            ->where('gd.measurementTime BETWEEN :from AND :to')
+            ->andWhere('gd.generatorID = :generatorID')
+            ->setParameter('from', $from->format('Y-m-d H:i:s'))
+            ->setParameter('to', $to->format('Y-m-d H:i:s'))
+            ->setParameter('generatorID', $generator->getId())
+            ->orderBy('gd.measurementTime', 'DESC')
         ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?GeneratorData
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
+        $query = $qb
             ->getQuery()
-            ->getOneOrNullResult()
+            ->setFirstResult($this->getFirstResult($page, $perpage))
+            ->setMaxResults($this->getMaxResults($perpage))
         ;
+        return (new Paginator($query))->getQuery()->getResult();
     }
-    */
 }

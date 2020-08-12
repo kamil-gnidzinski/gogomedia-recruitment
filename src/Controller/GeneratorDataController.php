@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\GeneratorData;
+use App\Form\GeneratorDataSearchType;
 use App\Form\GeneratorDataType;
 use App\Serializer\FormErrorSerializer;
+use App\Service\GeneratorData\GeneratorDataSearch;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
@@ -16,14 +18,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- *Api controller.
- * @Route("/api",name="api_")
- */
+
 class GeneratorDataController extends AbstractFOSRestController
 {
     /**
-     * @Rest\Post("/generator/data", name="generator_data_create")
+     * @Rest\Post("api/generator/data", name="generator_data_create")
      * @Rest\View()
      * @param Request $request
      * @param FormErrorSerializer $errorSerializer
@@ -47,5 +46,24 @@ class GeneratorDataController extends AbstractFOSRestController
             "response" => $errorSerializer->convertFormToArray($form
             )], JsonResponse::HTTP_BAD_REQUEST
         );
+    }
+
+    /**
+     * Api controller.
+     * @Route("/generator/data/search",name="generator_data_search")
+     */
+    public function searchGeneratorData(Request $request, GeneratorDataSearch $dataSearch)
+    {
+        $form = $this->createForm(GeneratorDataSearchType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $result = $dataSearch->searchData($data['dateFrom'],$data['dateTo'],$data['generator'],$data['page'],$data['perpage']);
+        };
+
+        return $this->render('GeneratorData/GeneratorDataSearch.html.twig', [
+            'form' => $form->createView(),
+            'result' => $result ?? null
+        ]);
     }
 }

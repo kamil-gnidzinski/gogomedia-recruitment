@@ -1,0 +1,31 @@
+<html>
+<body>
+{{ form_start(form) }}
+{{ form_widget(form) }}
+<button type="submit">Search</button>
+{{ form_end(form) }}
+
+{% if result is not null %}
+<table border="solid">
+    <thead>
+        <tr>
+            <th style="width:10%;">GeneratorID</th>
+            <th style="width:20%">Generator Name</th>
+            <th style="width:60%">Measurement time</th>
+            <th style="width:10%">Power</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for generatorData in result %}
+            <tr>
+                <td>{{ generatorData.generatorID.id }}</td>
+                <td>{{ generatorData.generatorID.generatorName }}</td>
+                <td>{{ generatorData.measurementTime|date('Y-m-d H:i:s.u') }}</td>
+                <td>{{ generatorData.currentPower }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+</body>
+</html>
