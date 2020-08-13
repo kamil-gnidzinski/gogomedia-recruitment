@@ -19,32 +19,14 @@ class ReportRepository extends ServiceEntityRepository
         parent::__construct($registry, Report::class);
     }
 
-    // /**
-    //  * @return Report[] Returns an array of Report objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getDataForDailyReport(\DateTime $date)
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $qb = $this->createQueryBuilder('r');
+        $qb
+            ->where('r.reportDate LIKE :date')
+            ->setParameter('date', $date->format('Y-m-d').'%')
+            ->orderBy('r.generatorID', 'ASC')
         ;
+        return $qb->getQuery()->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Report
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

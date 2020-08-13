@@ -11,16 +11,16 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class GenerateHourlyReportCommand extends Command
+class GenerateDailyReportCommand extends Command
 {
-    protected static $defaultName = 'app:generate-hourly-report';
+    protected static $defaultName = 'app:generate-daily-report';
     private $reportCreator;
 
     /**
      * GenerateHourlyReportCommand constructor.
      * @param HourlyReport $reportCreator
      */
-    public function __construct(HourlyReport $reportCreator)
+    public function __construct(DailyReport $reportCreator)
     {
         parent::__construct();
         $this->reportCreator = $reportCreator;

@@ -6,11 +6,11 @@ use App\Entity\Generator;
 use App\Entity\GeneratorData;
 use App\Entity\Report;
 use App\Form\ReportType;
-use App\Serializer\FormErrorSerializer;
+use App\Interfaces\ReportInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class ReportCreator
+class HourlyReport implements  ReportInterface
 {
 
     private $em;
@@ -18,7 +18,7 @@ class ReportCreator
     private $formFactory;
 
     /**
-     * ReportCreator constructor.
+     * DailyReport constructor.
      * @param EntityManagerInterface $em
      * @param FormFactoryInterface $formFactory
      */
@@ -32,7 +32,7 @@ class ReportCreator
     /**
      * Creates report entities.
      */
-    public function createHourlyReport(): void
+    public function createReport(): void
     {
         $generator = $this->em->getRepository(Generator::class)->find(1);
         $generatorDataForReports = $this->em->getRepository(GeneratorData::class)->getDataForHourlyReport($this->date, $generator);
@@ -44,6 +44,5 @@ class ReportCreator
         }
         $this->em->flush();
     }
-
 
 }
