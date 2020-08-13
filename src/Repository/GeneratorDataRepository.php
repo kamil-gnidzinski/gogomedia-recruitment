@@ -56,16 +56,14 @@ class GeneratorDataRepository extends ServiceEntityRepository
         return (new Paginator($query))->getQuery()->getResult();
     }
 
-    public function getDataForHourlyReport(\DateTime $dateTime, Generator $generator)
+    public function getDataForHourlyReport(\DateTime $dateTime)
     {
         $qb = $this->createQueryBuilder('gd');
         $qb
-            ->select('IDENTITY(gd.generatorID) as generatorID,SUM(gd.currentPower) as generatorPower')
+            ->select('IDENTITY(gd.generatorID) as generatorID,(SUM(gd.currentPower) / 1000) as generatorPower')
             ->where('gd.measurementTime BETWEEN :from AND :to')
-           // ->andWhere('gd.generatorID = :generatorID')
             ->setParameter('from', $dateTime->format('Y-m-d H:00:00'))
             ->setParameter('to', $dateTime->format('Y-m-d H:59:59'))
-          // ->setParameter('generatorID', $generator->getId())
             ->groupBy('gd.generatorID')
         ;
         return $qb->getQuery()->getResult();
