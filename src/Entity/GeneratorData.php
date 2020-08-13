@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Repository\GeneratorDataRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Type;
+
 
 /**
  * @ORM\Entity(repositoryClass=GeneratorDataRepository::class)
- * @ORM\Table(indexes={@ORM\Index(name="idx_search",columns={"generatorID","measurementTime"})})
+ * @ORM\Table(indexes={@ORM\Index(name="idx_search",columns={"generator","measurement_time"})})
  *
  */
 class GeneratorData
@@ -21,7 +23,7 @@ class GeneratorData
 
     /**
      * @ORM\ManyToOne(targetEntity=Generator::class, inversedBy="data")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="generator", referencedColumnName="id")
      */
     private $generatorID;
 

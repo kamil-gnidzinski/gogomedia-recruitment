@@ -7,7 +7,7 @@ use App\Entity\Report;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,7 +19,7 @@ class ReportType extends AbstractType
             ->add('reportDate',DateTimeType::class, [
                 'widget' => 'single_text'
             ])
-            ->add('generatorPower', IntegerType::class)
+            ->add('generatorPower', NumberType::class)
             ->add('generatorID',EntityType::class, [
                 'class' => Generator::class,
                 'choice_label' => 'id',

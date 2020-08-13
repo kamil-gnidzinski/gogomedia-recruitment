@@ -6,11 +6,19 @@ use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use Doctrine\DBAL\Types\Type;
 
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
+    public function boot()
+    {
+        parent::boot();
+
+
+        Type::overrideType('datetime', 'Db\Types\DateTimeMicrosecondsType');
+    }
     protected function configureContainer(ContainerConfigurator $container): void
     {
         $container->import('../config/{packages}/*.yaml');

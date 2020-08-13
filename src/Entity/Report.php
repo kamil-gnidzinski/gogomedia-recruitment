@@ -29,11 +29,11 @@ class Report
     private $reportDate;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="decimal", precision=7, scale=3)
      */
     private $generatorPower;
 
-    public function getId(): ?int
+    public function getId(): ?decimal
     {
         return $this->id;
     }
@@ -62,12 +62,12 @@ class Report
         return $this;
     }
 
-    public function getGeneratorPower(): ?int
+    public function getGeneratorPower(): ?float
     {
         return $this->generatorPower;
     }
 
-    public function setGeneratorPower(int $generatorPower): self
+    public function setGeneratorPower(float $generatorPower): self
     {
         $this->generatorPower = $generatorPower;
 
